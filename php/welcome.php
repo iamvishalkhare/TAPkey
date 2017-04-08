@@ -51,7 +51,7 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 		        <ul class="dropdown-menu">
 		            <li><a data-toggle="modal" data-target="#abouttapkey">&#10068;&nbsp;&nbsp;About <b>TAPkey &#9996;</b></a></li>
 		            <li><a data-toggle="modal" data-target="#resumeinfo">&#8475;&nbsp;&nbsp;What is a Résumé and CV?</b></a></li>
-		            <li><a data-toggle="modal" data-target="#optionModal">&#9888;&nbsp;&nbsp;Report a Bug</a></li>
+		            <li><a data-toggle="modal" data-target="#reportbug">&#9888;&nbsp;&nbsp;Report a Bug</a></li>
 		            <li><a data-toggle="modal" data-target="#changepass">&#9998;&nbsp;&nbsp;Change Password</a></li>
 		            <li><a href="http://www.scanitjsr.org/tapkey">&#9919;&nbsp;&nbsp;Logout</a></li>	
 		        </ul>
@@ -139,14 +139,14 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 	<tr><td valign="top">
 	<div class="alert alert-info" role="alert" style="margin-left: 10px; margin-top: 10px; margin-right: 10px;">
 			  <div style="font-weight: bold;">Upload your Résumé &#8594;</div>
-			  <em><li>Upload Only a PDF Document</li></em>
+			  <em><li>Upload Only PDF Document</li></em>
 			  <em><li>Maximum Size limit - 2 MB</li></em>
 			  <em><li>Uploading a new Résumé will overwrite previously saved one</li></em>
 			</div>
 	</td>
 	<td valign="top" style="padding-right: 10px;">
 		<form style="margin-right:10px;margin: auto; margin-top: 10px; padding: 1em 1em 1em 1em; font-size: 12px;" class="file" method="post" enctype="multipart/form-data">
-		    <input id="resume" type="file" required/><br>
+		    <input id="resume" name="resume" type="file" required/><br>
 		    <div id="error_display3"></div>
 		    <button type="button" style="height: 40px; width:100%; background-color: #1E88E5; color: #fff; font-size: 20px;" onclick="resumefunc();">Upload</button>
 		</form>
@@ -266,6 +266,7 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 </div>
 
 
+
 <!--div for modal after test is successfully added.-->
 <div class="modal bs-modal-lg" id="resumeinfo" style="margin-left: 100px;">
   <div class="modal-dialog modal-lg"  role="document">
@@ -277,7 +278,7 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
         <h2 class="modal-title" id="myModalLabel">Curriculum vitae and Résumé</h2>
       </div>
       <div class="modal-body" style=" font-size:18px; font-family: 'Pavanam', sans-serif;">
-			      <b>Curriculum vitae or CV</b> for short, is a latin expression which loosely translates to ‘the course of life’. By definition, a CV contains your biography or detailed account of academics, experience and projects undertaken, accomplishments, awards and affiliations, publications, teaching experience, honors and grants. A CV is written in a chronological order and the content does not change as per the job requirement.<br><br>
+			    <b>Curriculum vitae or CV</b> for short, is a latin expression which loosely translates to ‘the course of life’. By definition, a CV contains your biography or detailed account of academics, experience and projects undertaken, accomplishments, awards and affiliations, publications, teaching experience, honors and grants. A CV is written in a chronological order and the content does not change as per the job requirement.<br><br>
 
 				<b>Résumé</b>, a french word, means to sum up. Résumé is a brief job specific document that summarises the job experience, skillset, accomplishments, education, volunteer and extra curricular activities directly relevant to the particular position. The order in which it written is of little or no importance but the content must be tailored to suit the position applied for.The length of a resume is usually one or two pages whereas the length of the CV may vary as per the content.<br><br>
 
@@ -307,7 +308,7 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
         <h2 class="modal-title" id="myModalLabel">About <b>TAPkey &#9996;</b></h2>
       </div>
       <div class="modal-body" style=" font-size:18px; font-family: 'Pavanam', sans-serif;">
-			      <b>Curriculum vitae or CV</b> for short, is a latin expression which loosely translates to ‘the course of life’. By definition, a CV contains your biography or detailed account of academics, experience and projects undertaken, accomplishments, awards and affiliations, publications, teaching experience, honors and grants. A CV is written in a chronological order and the content does not change as per the job requirement.<br><br>
+			    <b>Curriculum vitae or CV</b> for short, is a latin expression which loosely translates to ‘the course of life’. By definition, a CV contains your biography or detailed account of academics, experience and projects undertaken, accomplishments, awards and affiliations, publications, teaching experience, honors and grants. A CV is written in a chronological order and the content does not change as per the job requirement.<br><br>
 
 				<b>Résumé</b>, a french word, means to sum up. Résumé is a brief job specific document that summarises the job experience, skillset, accomplishments, education, volunteer and extra curricular activities directly relevant to the particular position. The order in which it written is of little or no importance but the content must be tailored to suit the position applied for.The length of a resume is usually one or two pages whereas the length of the CV may vary as per the content.<br><br>
 
@@ -318,7 +319,7 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
         <center>
         <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
     	</center>
-      </div>
+       </div>
     	</center>
       </div>
     </div>
