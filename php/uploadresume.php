@@ -12,6 +12,7 @@ if(isset($_FILES['resume']))
 	if($extension != "pdf")
 	{
 		echo "notpdf";
+		exit();
 	}
 	$newfilename=$_SESSION['id'].'.'.$extension;
     if (move_uploaded_file($_FILES['resume']['tmp_name'], "resumes/$newfilename")) 

@@ -6,9 +6,13 @@ if(!isset($_SESSION['id']))
 	exit();
 }
 include("connection.php");
+include("mailsetting.php");
 $curpass=$_GET['curpass'];
 $pass=$_GET['pass'];
 $id=$_SESSION['id'];
+$useragent =$_SERVER['HTTP_USER_AGENT'];
+$ip = getRealIpAddr();
+$passchangedate = date("l jS \of F Y h:i:s A");
 $stmt = $pdo->prepare("SELECT * from stu_tbl WHERE username = :id");
 $stmt->execute(array(':id' => $id));
 $result=$stmt->fetch(PDO::FETCH_ASSOC);
@@ -23,6 +27,11 @@ else
 	$stmt2 = $pdo->prepare("UPDATE stu_tbl SET password = :pass WHERE username = :id");
 	if($stmt2->execute(array(':pass' => $newpass, ':id' => $id)))
 	{
+		$mail->addAddress($result['email'], $result['name']);
+		$mail->isHTML(true);
+		$mail->Subject='TAPkey - Account Password Changed';
+		$mail->Body ='<h2>Dear '.$result['name'].'</h2><h3>(Reg. No. - '.$_SESSION['id'].')</h3><h4>You TAPkey account password was changed on '.$passchangedate.' </h4><br><b>Password Changed from -- </b>'.$useragent.'<br><br><b>IP Address -- </b>'.$ip.'<br><br>NOTE : <br><em><li>If you did not changed the password then immediately contact the administrator.</li><li>Please do not delete this mail and produce a printed copy of it when asked by your TAP member.</li></em><br><br><br>Regards<br><br><b>Vishal Khare</b><br>Member, Training and Placement Cell<br>National Institute of Technology Jamshedpur<br>Jharkhand, INDIA - 831014<br><br>Ph : +91-7319706481<br>E-Mail : vishalkhare39@gmail.com';
+		$mail->send();
 		echo "success";
 		exit();
 	}
@@ -31,5 +40,22 @@ else
 		echo "failed";
 		exit();
 	}
+}
+
+function getRealIpAddr()
+{
+    if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
+    {
+      $ip=$_SERVER['HTTP_CLIENT_IP'];
+    }
+    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   //to check ip is pass from proxy
+    {
+      $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
+    }
+    else
+    {
+      $ip=$_SERVER['REMOTE_ADDR'];
+    }
+    return $ip;
 }
 ?>

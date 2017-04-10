@@ -15,14 +15,11 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 ?>
 <title>TAPkey</title>
 <head>
-<script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-    </script>
 	<link rel="icon" href="../img/favicon.png" type="image/x-icon">
 	<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 	<link href="../css/bootstrap.min.css" rel="stylesheet">	
+	<link href="../css/introjs.min.css" rel="stylesheet">	
+	<script src="../js/intro.min.js"></script>
 	<script src="../js/bootstrap.min.js"></script>
 	<script src="../js/changepass.js"></script>
 	<script src="../js/stuinfo.js"></script>
@@ -42,17 +39,16 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
     <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Pavanam" rel="stylesheet">
 </head>
-<body onload="onLoadBody();">
+<body onload="introJs().setOption('showProgress', true).start();">
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container">
-  	<a href="" style="color:white; font-size:30px; font-family:Oswald, sans-serif;">TAPkey &#9996;</a>
+  	<a data-step="1" data-intro="Welcome to TAPkey. This is a short tour of TAPkey." data-position='bottom' style="color:white; font-size:30px; font-family:Oswald, sans-serif;">TAPkey &#9996;</a>
 		<div class="btn-group pull-right" style=" margin-top:7px;">
-		      <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle" aria-haspopup="true" aria-expanded="false"><?php echo $name;?>&nbsp;&nbsp;&#9776;</button>
+		      <button data-step="5" data-intro="You can change your password and know more about TAPkey here." data-position='bottom' type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle" aria-haspopup="true" aria-expanded="false"><?php echo $name;?>&nbsp;&nbsp;&#9776;</button>
 		        <ul class="dropdown-menu">
-		            <li><a data-toggle="modal" data-target="#abouttapkey">&#10068;&nbsp;&nbsp;About <b>TAPkey &#9996;</b></a></li>
-		            <li><a data-toggle="modal" data-target="#resumeinfo">&#8475;&nbsp;&nbsp;What is a Résumé and CV?</b></a></li>
-		            <li><a data-toggle="modal" data-target="#reportbug">&#9888;&nbsp;&nbsp;Report a Bug</a></li>
-		            <li><a data-toggle="modal" data-target="#changepass">&#9998;&nbsp;&nbsp;Change Password</a></li>
+		            <li><a id="abouttapkeylink">&#10068;&nbsp;&nbsp;About <b>TAPkey &#9996;</b></a></li>
+		            <li><a id="resumeinfolink">&#8475;&nbsp;&nbsp;What is a Résumé and CV?</b></a></li>
+		            <li><a id="changepassword" >&#9998;&nbsp;&nbsp;Change Password</a></li>
 		            <li><a href="http://www.scanitjsr.org/tapkey">&#9919;&nbsp;&nbsp;Logout</a></li>	
 		        </ul>
 		</div>
@@ -61,8 +57,8 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 </nav>
 <link rel="stylesheet" href="../css/index_style.css">
 <div class="container">
-	<div class= "customscrollbar"  id="stuinfodiv">
-		<h1 style="text-align: center;">&#9998; Student Info</h1>
+	<div class= "customscrollbar"  id="stuinfodiv" data-step="2" data-intro="This section shows all your details we have with us. Keep it updated at all times." data-position='right'>
+		<h1 style="text-align: center; font-family: 'Pavanam', sans-serif;"">&#9998; Student Info</h1>
 		<form style="margin-top: 10px;">
 		<div class="group">
 		    <div class="alert alert-info" role="alert">
@@ -131,10 +127,10 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 		  </button>
 		</form>
 	</div>
-	<div id="announcementsdiv">
+	<div id="announcementsdiv" data-step="4" data-intro="This is the announcement section which is under construction right now." data-position='left'>
 		
 	</div>
-	<div class= "customscrollbar" id="resumediv">
+	<div class= "customscrollbar" id="resumediv" data-step="3" data-intro="This section gives you liberty to upload your Résumé to us. Keep your Résumé updated at all times." data-position='top'>
 	<table style="width:100%;height:100%">
 	<tr><td valign="top">
 	<div class="alert alert-info" role="alert" style="margin-left: 10px; margin-top: 10px; margin-right: 10px;">
@@ -155,7 +151,104 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 		
 	</div>
 </div>
-	</body>
+<div class="modal bs-modal-md" id="changepass">
+  <div class="modal-dialog modal-md"  role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Change Password</h4>
+      </div>
+      <div class="modal-body">
+      	<br>
+      	<div id="changepassform">
+      		<div class="group">
+		    <input type="text" id="currentpass" style="background: white;"><span class="highlight" ></span><span class="bar"></span>
+		    <label>Current Password</label>
+		  </div>
+		  <div class="group">
+		    <input type="password" id="newpassword" style="background: white;"><span class="highlight" ></span><span class="bar"></span>
+		    <label>New Password</label>
+		  </div>
+		  <div class="group">
+		    <input type="password" id="newpassword1" style="background: white;"><span class="highlight" ></span><span class="bar"></span>
+		    <label>Re-Type New password</label>
+		  </div>
+		  <div id="error_display1"></div>
+      	</div>
+      </div>
+      <div class="modal-footer">
+        <center>
+        
+        <button type="button" class="btn btn-success" onclick="changepass();">Submit</button>
+        <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+    	</center>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--div for modal after test is successfully added.-->
+<div class="modal bs-modal-lg" id="resumeinfo" style="margin-left: 100px;">
+  <div class="modal-dialog modal-lg"  role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="window.location.reload();">
+        </button>
+        <h2 class="modal-title" id="myModalLabel">Curriculum vitae and Résumé</h2>
+      </div>
+      <div class="modal-body" style=" font-size:18px; font-family: 'Pavanam', sans-serif;">
+			    <b>Curriculum vitae or CV</b> for short, is a latin expression which loosely translates to ‘the course of life’. By definition, a CV contains your biography or detailed account of academics, experience and projects undertaken, accomplishments, awards and affiliations, publications, teaching experience, honors and grants. A CV is written in a chronological order and the content does not change as per the job requirement.<br><br>
+
+				<b>Résumé</b>, a french word, means to sum up. Résumé is a brief job specific document that summarises the job experience, skillset, accomplishments, education, volunteer and extra curricular activities directly relevant to the particular position. The order in which it written is of little or no importance but the content must be tailored to suit the position applied for.The length of a resume is usually one or two pages whereas the length of the CV may vary as per the content.<br><br>
+
+				CV is mainly used in UK, New Zealand, European Union. Résumé is used in US and Canada. In India, South Africa and Australia, the terms resume and CV are used interchangeably.Depending on which part of the world you stay, you may choose the type of document. In India, unless specified, a combination of CV and resume is used. The document must contain your work experience so far(only relevant experience if you are aiming for change of career), education, training and volunteer activities, accomplishments, and extra-curricular activities, affiliations and publications.
+      </div>
+      
+       <div class="modal-footer">
+        <center>
+        <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+    	</center>
+      </div>
+    	</center>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal bs-modal-lg" id="abouttapkey" style="margin-left: 100px;">
+  <div class="modal-dialog modal-lg"  role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="window.location.reload();">
+        </button>
+        <h2 class="modal-title" id="myModalLabel">About <b>TAPkey &#9996;</b></h2>
+      </div>
+      <div class="modal-body" style=" font-size:18px; font-family: 'Pavanam', sans-serif;">
+			    <b>Curriculum vitae or CV</b> for short, is a latin expression which loosely translates to ‘the course of life’. By definition, a CV contains your biography or detailed account of academics, experience and projects undertaken, accomplishments, awards and affiliations, publications, teaching experience, honors and grants. A CV is written in a chronological order and the content does not change as per the job requirement.<br><br>
+
+				<b>Résumé</b>, a french word, means to sum up. Résumé is a brief job specific document that summarises the job experience, skillset, accomplishments, education, volunteer and extra curricular activities directly relevant to the particular position. The order in which it written is of little or no importance but the content must be tailored to suit the position applied for.The length of a resume is usually one or two pages whereas the length of the CV may vary as per the content.<br><br>
+
+				CV is mainly used in UK, New Zealand, European Union. Résumé is used in US and Canada. In India, South Africa and Australia, the terms resume and CV are used interchangeably.Depending on which part of the world you stay, you may choose the type of document. In India, unless specified, a combination of CV and resume is used. The document must contain your work experience so far(only relevant experience if you are aiming for change of career), education, training and volunteer activities, accomplishments, and extra-curricular activities, affiliations and publications.
+      </div>
+      
+       <div class="modal-footer">
+        <center>
+        <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+    	</center>
+       </div>
+    	</center>
+      </div>
+    </div>
+  </div>
+</div>
+	
+
+
 	<div id="displaymasterblock">
 		
 		<!--<div class="alert alert-info fade in" id="addtestheader">
@@ -224,112 +317,34 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 				</center>
 			</form>-->
 	</div>
-</div>
+
 
 <!--div for Change Password-->
-<div class="modal bs-modal-md" id="changepass">
-  <div class="modal-dialog modal-md"  role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title" id="myModalLabel">Change Password</h4>
-      </div>
-      <div class="modal-body">
-      	<br>
-      	<div id="changepassform">
-      		<div class="group">
-		    <input type="text" id="currentpass" style="background: white;"><span class="highlight" ></span><span class="bar"></span>
-		    <label>Current Password</label>
-		  </div>
-		  <div class="group">
-		    <input type="password" id="newpassword" style="background: white;"><span class="highlight" ></span><span class="bar"></span>
-		    <label>New Password</label>
-		  </div>
-		  <div class="group">
-		    <input type="password" id="newpassword1" style="background: white;"><span class="highlight" ></span><span class="bar"></span>
-		    <label>Re-Type New password</label>
-		  </div>
-		  <div id="error_display1"></div>
-      	</div>
-      </div>
-      <div class="modal-footer">
-        <center>
-        
-        <button type="button" class="btn btn-success" onclick="changepass();">Submit</button>
-        <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
-    	</center>
-      </div>
-    </div>
-  </div>
-</div>
 
-
-
-<!--div for modal after test is successfully added.-->
-<div class="modal bs-modal-lg" id="resumeinfo" style="margin-left: 100px;">
-  <div class="modal-dialog modal-lg"  role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="window.location.reload();">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h2 class="modal-title" id="myModalLabel">Curriculum vitae and Résumé</h2>
-      </div>
-      <div class="modal-body" style=" font-size:18px; font-family: 'Pavanam', sans-serif;">
-			    <b>Curriculum vitae or CV</b> for short, is a latin expression which loosely translates to ‘the course of life’. By definition, a CV contains your biography or detailed account of academics, experience and projects undertaken, accomplishments, awards and affiliations, publications, teaching experience, honors and grants. A CV is written in a chronological order and the content does not change as per the job requirement.<br><br>
-
-				<b>Résumé</b>, a french word, means to sum up. Résumé is a brief job specific document that summarises the job experience, skillset, accomplishments, education, volunteer and extra curricular activities directly relevant to the particular position. The order in which it written is of little or no importance but the content must be tailored to suit the position applied for.The length of a resume is usually one or two pages whereas the length of the CV may vary as per the content.<br><br>
-
-				CV is mainly used in UK, New Zealand, European Union. Résumé is used in US and Canada. In India, South Africa and Australia, the terms resume and CV are used interchangeably.Depending on which part of the world you stay, you may choose the type of document. In India, unless specified, a combination of CV and resume is used. The document must contain your work experience so far(only relevant experience if you are aiming for change of career), education, training and volunteer activities, accomplishments, and extra-curricular activities, affiliations and publications.
-      </div>
-      
-       <div class="modal-footer">
-        <center>
-        <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
-    	</center>
-      </div>
-    	</center>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-<div class="modal bs-modal-lg" id="abouttapkey" style="margin-left: 100px;">
-  <div class="modal-dialog modal-lg"  role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="window.location.reload();">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h2 class="modal-title" id="myModalLabel">About <b>TAPkey &#9996;</b></h2>
-      </div>
-      <div class="modal-body" style=" font-size:18px; font-family: 'Pavanam', sans-serif;">
-			    <b>Curriculum vitae or CV</b> for short, is a latin expression which loosely translates to ‘the course of life’. By definition, a CV contains your biography or detailed account of academics, experience and projects undertaken, accomplishments, awards and affiliations, publications, teaching experience, honors and grants. A CV is written in a chronological order and the content does not change as per the job requirement.<br><br>
-
-				<b>Résumé</b>, a french word, means to sum up. Résumé is a brief job specific document that summarises the job experience, skillset, accomplishments, education, volunteer and extra curricular activities directly relevant to the particular position. The order in which it written is of little or no importance but the content must be tailored to suit the position applied for.The length of a resume is usually one or two pages whereas the length of the CV may vary as per the content.<br><br>
-
-				CV is mainly used in UK, New Zealand, European Union. Résumé is used in US and Canada. In India, South Africa and Australia, the terms resume and CV are used interchangeably.Depending on which part of the world you stay, you may choose the type of document. In India, unless specified, a combination of CV and resume is used. The document must contain your work experience so far(only relevant experience if you are aiming for change of career), education, training and volunteer activities, accomplishments, and extra-curricular activities, affiliations and publications.
-      </div>
-      
-       <div class="modal-footer">
-        <center>
-        <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
-    	</center>
-       </div>
-    	</center>
-      </div>
-    </div>
-  </div>
-</div>
 <footer>
   <p>Designed with all the &#9829; in the world by <a href="http://www.facebook.com/iamvishalkhare" target="_blank">Vishal Khare</a></p>
 </footer>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="TAPkey/js/bootstrap.min.js"></script>
-
+<script src="../js/intro.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script type="text/javascript">                                              //launching modals
+		$(function(){
+		 $('#changepassword').click(function() {
+		   $('#changepass').modal('show');
+		 });
+		});
+		$(function(){
+		 $('#abouttapkeylink').click(function() {
+		   $('#abouttapkey').modal('show');
+		 });
+		});
+		$(function(){
+		 $('#resumeinfolink').click(function() {
+		   $('#resumeinfo').modal('show');
+		 });
+		});
+	</script>
+	<script src="../js/bootstrap.min.js"></script>
+</body>
 
 </html>

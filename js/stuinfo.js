@@ -140,6 +140,10 @@ function handleServerResponsestuinfo()
 			{
 				document.getElementById("error_display").innerHTML = '<div><div class="alert alert-success fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&#215;</a>Your details have been saved successfully.  &#9996;</b></div></div>';
 			}
+			else if(xmlHttp.responseText.indexOf("mailnotsent")==0)
+			{
+				document.getElementById("error_display").innerHTML = '<div><div class="alert alert-warning fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&#215;</a>Your details have been saved successfully.  &#9996, Although a confirmation mail can not be sent at the moment.;</b></div></div>';
+			}
 			else
 			{
 				document.getElementById("error_display").innerHTML = xmlHttp.responseText;
