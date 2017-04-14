@@ -1,9 +1,11 @@
 function stuinfo()
 {
-	document.getElementById("error_display").innerHTML = '<img src="http://localhost/dashboard/TAPkey/img/ring.gif">';
+	document.getElementById("error_display").innerHTML = '<img src="http://scanitjsr.org/tapkey/tapkey/img/ring.gif">';
+	//document.getElementById("error_display").innerHTML = '<img src="http://scanitjsr.org/tapkey/tapkey/img/ring.gif">';
 	var name = document.getElementById("name").value;    //fetching value in name Field
 	var email = document.getElementById("email").value;
 	var phone = document.getElementById("phone").value;
+	var dob = document.getElementById("dob").value;
 	var room = document.getElementById("room").value;
 	var per10 = document.getElementById("10per").value;
 	var year10 = document.getElementById("10year").value;
@@ -15,6 +17,7 @@ function stuinfo()
 	var gradyear = document.getElementById("gradyear").value;
 	var graduni = document.getElementById("graduni").value;
 	var mcacgpa = document.getElementById("mcacgpa").value;
+	var dobsplitted = dob.split("-");
 	if(name.length==0)                      //if stuid or password is empty
 	{
 		document.getElementById("error_display").innerHTML = '<div><div class="alert alert-danger fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&#215;</a><strong>Name </strong>can not be empty</div></div>';	
@@ -30,6 +33,10 @@ function stuinfo()
 	else if (phone.length != 10 || !phone.isNumber())    //checking if stuid is in correct format or not
 	{
 		document.getElementById("error_display").innerHTML = '<div><div class="alert alert-danger fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&#215;</a><strong>Phone number</strong>should be 10 digit long string.</div></div>';
+	}
+	else if (dob.length!=10 || dobsplitted[0] > 2000)    //checking if stuid is in correct format or not
+	{
+		document.getElementById("error_display").innerHTML = '<div><div class="alert alert-danger fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&#215;</a><strong>Date of Birth</strong> seems to be an impossible value</div></div>';
 	}
 	else if (room.length < 3 || room.length > 6)    //checking if stuid is in correct format or not
 	{
@@ -103,6 +110,7 @@ function processCheckDB()
 		var name = document.getElementById("name").value;    //fetching value in name Field
 		var email = document.getElementById("email").value;
 		var phone = document.getElementById("phone").value;
+		var dob = document.getElementById("dob").value;
 		var room = document.getElementById("room").value;
 		var per10 = document.getElementById("10per").value;
 		var year10 = document.getElementById("10year").value;
@@ -114,7 +122,8 @@ function processCheckDB()
 		var gradyear = document.getElementById("gradyear").value;
 		var graduni = document.getElementById("graduni").value;
 		var mcacgpa = document.getElementById("mcacgpa").value;
-		var url = "http://localhost/dashboard/TAPkey/php/stuinfo.php?name="+name+"&email="+email+"&phone="+phone+"&room="+room+"&per10="+per10+"&year10="+year10+"&board10="+board10+"&per12="+per12+"&year12="+year12+"&board12="+board12+"&gradper="+gradper+"&gradyear="+gradyear+"&graduni="+graduni+"&mcacgpa="+mcacgpa;  //Sending Data to php script for validation
+		var url = "http://localhost/dashboard/tapkey/php/stuinfo.php?name="+name+"&email="+email+"&phone="+phone+"&dob="+dob+"&room="+room+"&per10="+per10+"&year10="+year10+"&board10="+board10+"&per12="+per12+"&year12="+year12+"&board12="+board12+"&gradper="+gradper+"&gradyear="+gradyear+"&graduni="+graduni+"&mcacgpa="+mcacgpa;                  //Sending Data to php script for validation
+		//var url = "http://www.scanitjsr.org/tapkey/tapkey/php/stuinfo.php?name="+name+"&email="+email+"&phone="+phone+"&room="+room+"&per10="+per10+"&year10="+year10+"&board10="+board10+"&per12="+per12+"&year12="+year12+"&board12="+board12+"&gradper="+gradper+"&gradyear="+gradyear+"&graduni="+graduni+"&mcacgpa="+mcacgpa;                  //Sending Data to php script for validation
 		xmlHttp.open("GET",url, true);                                            //Preparing to send request
 		xmlHttp.onreadystatechange = handleServerResponsestuinfo;                   //Handling response that will come from php script
 		xmlHttp.send(null);                                                       //sending values to php script

@@ -1,6 +1,7 @@
 function resumefunc()
 {
-	document.getElementById("error_display3").innerHTML = '<img src="http://localhost/dashboard/TAPkey/img/ring.gif">';
+	document.getElementById("error_display3").innerHTML = '<img src="http://localhost/dashboard/tapkey/img/ring.gif">';
+	//document.getElementById("error_display3").innerHTML = '<img src="http://scanitjsr.org/tapkey/tapkey/img/ring.gif">';
 	var x = document.getElementById("resume");
 	if (typeof x.files[0] === 'undefined')
 	{
@@ -71,7 +72,8 @@ function processCheckDBresume()
 		var _file = document.getElementById("resume");
 		var data = new FormData();
 	    data.append('resume', _file.files[0]);
-		var url = "http://localhost/dashboard/TAPkey/php/uploadresume.php";       //Sending Data to php script for validation
+	    var url = "http://localhost/dashboard/tapkey/php/uploadresume.php";       //Sending Data to php script for validation
+		//var url = "http://www.scanitjsr.org/tapkey/tapkey/php/uploadresume.php";       //Sending Data to php script for validation
 		xmlHttp.open("POST",url);                                            //Preparing to send request
 		xmlHttp.onreadystatechange = handleServerResponseResume;                   //Handling response that will come from php script
 		xmlHttp.send(data);                                                       //sending values to php script

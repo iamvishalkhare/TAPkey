@@ -1,6 +1,12 @@
 <?php
+if(!isset($_GET['id']))
+{
+	header('Location: http://localhost/dashboard');
+	//header('Location: http://www.scanitjsr.org/tapkey');
+	exit();
+}
 include("../connection.php");
-$id=$_GET['id'];
+$id = $_GET['id'];
 $pass=$_GET['password'];
 $stmt = $pdo->prepare("SELECT * from stu_tbl WHERE username = :id");
 $stmt->execute(array(':id' => $id));

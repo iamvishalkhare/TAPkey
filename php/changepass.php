@@ -2,7 +2,8 @@
 session_start();
 if(!isset($_SESSION['id']))
 {
-	header('Location: http://www.scanitjsr.org/tapkey');
+	header('Location: http://localhost/dashboard');
+	//header('Location: http://www.scanitjsr.org/tapkey');
 	exit();
 }
 include("connection.php");
@@ -12,6 +13,7 @@ $pass=$_GET['pass'];
 $id=$_SESSION['id'];
 $useragent =$_SERVER['HTTP_USER_AGENT'];
 $ip = getRealIpAddr();
+date_default_timezone_set("Asia/Kolkata");
 $passchangedate = date("l jS \of F Y h:i:s A");
 $stmt = $pdo->prepare("SELECT * from stu_tbl WHERE username = :id");
 $stmt->execute(array(':id' => $id));
@@ -27,10 +29,52 @@ else
 	$stmt2 = $pdo->prepare("UPDATE stu_tbl SET password = :pass WHERE username = :id");
 	if($stmt2->execute(array(':pass' => $newpass, ':id' => $id)))
 	{
-		$mail->addAddress($result['email'], $result['name']);
+	
+		$to = $result['email'];
+		$subject = "Tapkey - Account Password Changed";
+		
+		$message = '<h2>Dear '.$result['name'].'</h2><h3>(Reg. No. - '.$_SESSION['id'].')</h3><h4>You tapkey account password was changed on '.$passchangedate.' </h4><br><b>Password Changed from -- </b>'.$useragent.'<br><br><b>IP Address -- </b>'.$ip.'<br><br>NOTE : <br><em><li>If you did not changed the password then immediately contact the administrator.</li><li>Please do not delete this mail and produce a printed copy of it when asked by your TAP member.</li></em><br><br><br>Regards<br><br><b>Vishal Khare</b><br>Member, Training and Placement Cell<br>National Institute of Technology Jamshedpur<br>Jharkhand, INDIA - 831014<br><br>Ph : +91-7319706481<br>E-Mail : vishalkhare39@gmail.com';
+		$headers = "MIME-Version: 1.0" . "\r\n";
+		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+		
+		// More headers
+		$headers .= 'From: Vishal Khare <vishalkhare39@gmail.com>' . "\r\n";
+		//$headers[] = 'MIME-Version: 1.0';
+		//$headers[] = 'Content-type: text/html; charset=iso-8859-1';
+		
+			
+			if(mail($to, $subject, $message, $headers)) 
+			{
+				echo "success";
+				exit();	
+			}
+			else
+			{
+				echo "mailfailed";
+				exit();
+			}
+	}
+	else
+	{
+		echo "failed";
+		exit();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		/*$mail->addAddress($result['email'], $result['name']);
 		$mail->isHTML(true);
-		$mail->Subject='TAPkey - Account Password Changed';
-		$mail->Body ='<h2>Dear '.$result['name'].'</h2><h3>(Reg. No. - '.$_SESSION['id'].')</h3><h4>You TAPkey account password was changed on '.$passchangedate.' </h4><br><b>Password Changed from -- </b>'.$useragent.'<br><br><b>IP Address -- </b>'.$ip.'<br><br>NOTE : <br><em><li>If you did not changed the password then immediately contact the administrator.</li><li>Please do not delete this mail and produce a printed copy of it when asked by your TAP member.</li></em><br><br><br>Regards<br><br><b>Vishal Khare</b><br>Member, Training and Placement Cell<br>National Institute of Technology Jamshedpur<br>Jharkhand, INDIA - 831014<br><br>Ph : +91-7319706481<br>E-Mail : vishalkhare39@gmail.com';
+		$mail->Subject='tapkey - Account Password Changed';
+		$mail->Body ='<h2>Dear '.$result['name'].'</h2><h3>(Reg. No. - '.$_SESSION['id'].')</h3><h4>You tapkey account password was changed on '.$passchangedate.' </h4><br><b>Password Changed from -- </b>'.$useragent.'<br><br><b>IP Address -- </b>'.$ip.'<br><br>NOTE : <br><em><li>If you did not changed the password then immediately contact the administrator.</li><li>Please do not delete this mail and produce a printed copy of it when asked by your TAP member.</li></em><br><br><br>Regards<br><br><b>Vishal Khare</b><br>Member, Training and Placement Cell<br>National Institute of Technology Jamshedpur<br>Jharkhand, INDIA - 831014<br><br>Ph : +91-7319706481<br>E-Mail : vishalkhare39@gmail.com';
 		$mail->send();
 		echo "success";
 		exit();
@@ -39,7 +83,7 @@ else
 	{
 		echo "failed";
 		exit();
-	}
+	}*/
 }
 
 function getRealIpAddr()

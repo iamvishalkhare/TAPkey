@@ -1,6 +1,7 @@
 function login()
 {
-	document.getElementById("error_display").innerHTML = '<img src="http://localhost/dashboard/TAPkey/img/ring.gif">';
+	document.getElementById("error_display").innerHTML = '<img src="http://localhost/dashboard/tapkey/img/ring.gif">';
+	//document.getElementById("error_display").innerHTML = '<img src="http://scanitjsr.org/tapkey/tapkey/img/ring.gif">';
 	var id = document.getElementById("id").value;      //fetching value in E-Mail Field
 	var pass = document.getElementById("password").value;    //fetching value in Password Field
 	if(id.length==0||pass.length==0)                      //if stuid or password is empty
@@ -72,7 +73,8 @@ function processCheckDB()
 		
 		var id = (encodeURIComponent(document.getElementById("id").value)).toUpperCase();    // Reading from User
 		var pass = encodeURIComponent(document.getElementById("password").value);
-		var url = "http://localhost/dashboard/TAPkey/php/login/login.php?id="+id+"&password="+pass;  //Sending Data to php script for validation
+		var url = "http://localhost/dashboard/tapkey/php/login/login.php?id="+id+"&password="+pass;  //Sending Data to php script for validation
+		//var url = "http://" + document.domain + "/tapkey/tapkey/php/login/login.php?id="+id+"&password="+pass;  //Sending Data to php script for validation
 		xmlHttp.open("GET",url, true);                                            //Preparing to send request
 		xmlHttp.onreadystatechange = handleServerResponseLoginstu;                   //Handling response that will come from php script
 		xmlHttp.send(null);                                                       //sending values to php script
@@ -86,7 +88,7 @@ function processCheckDB()
 
 function handleServerResponseLoginstu()
 {
-	if(xmlHttp.readyState==4||xmlHttp.readyState==0)                              //If object state is either 0 OR 4 i.e. object not engaged otherwise.
+	if(xmlHttp.readyState==4 || xmlHttp.readyState==0)                              //If object state is either 0 OR 4 i.e. object not engaged otherwise.
 	{
 		if(xmlHttp.status==200)                                                   //status 200 means everything went OK
 		{
@@ -100,7 +102,8 @@ function handleServerResponseLoginstu()
 			}
 			else if(xmlHttp.responseText.indexOf("authenticated")==0)
 			{
-				window.location = "http://localhost/dashboard/TAPkey/php/welcome.php"
+				window.location = "http://localhost/dashboard/tapkey/php/welcome.php"
+				//window.location = "http://www.scanitjsr.org/tapkey/tapkey/php/welcome.php";
 			}
 			else
 			{
@@ -109,7 +112,7 @@ function handleServerResponseLoginstu()
 		}
 		else
 		{
-			alert("xmlHttp.status!=200");
+			alert(xmlHttp.status);
 		}
 	}
 }

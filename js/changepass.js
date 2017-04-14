@@ -1,6 +1,7 @@
 function changepass()
 {
-	document.getElementById("error_display1").innerHTML = '<img src="http://localhost/dashboard/TAPkey/img/ring.gif">';
+	document.getElementById("error_display").innerHTML = '<img src="http://localhost/dashboard/tapkey/img/ring.gif">';
+	//document.getElementById("error_display1").innerHTML = '<img src="http://scanitjsr.org/tapkey/tapkey/img/ring.gif">';
 	var curpass = document.getElementById("currentpass").value;      //fetching value in E-Mail Field
 	var pass = document.getElementById("newpassword").value;    //fetching value in Password Field
 	var pass1 = document.getElementById("newpassword1").value;
@@ -61,7 +62,8 @@ function processCheckDB1()
 	{	
 		var curpass = document.getElementById("currentpass").value;      //fetching value in E-Mail Field
 		var pass = document.getElementById("newpassword").value;    //fetching value in Password Field
-		var url = "http://localhost/dashboard/TAPkey/php/changepass.php?curpass="+curpass+"&pass="+pass;  //Sending Data to php script for validation
+		var url = "http://localhost/dashboard/tapkey/php/changepass.php?curpass="+curpass+"&pass="+pass;  //Sending Data to php script for validation
+		//var url = "http://www.scanitjsr.org/tapkey/tapkey/php/changepass.php?curpass="+curpass+"&pass="+pass;  //Sending Data to php script for validation
 		xmlHttp.open("GET",url, true);                                            //Preparing to send request
 		xmlHttp.onreadystatechange = handleServerResponse;                   //Handling response that will come from php script
 		xmlHttp.send(null);                                                       //sending values to php script
@@ -91,6 +93,10 @@ function handleServerResponse()
 			else if(xmlHttp.responseText.indexOf("failed")==0)
 			{
 				document.getElementById("error_display1").innerHTML = '<div><div class="alert alert-danger fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&#215;</a>Technical Glitch. Please contact Administrator</div></div>';
+			}
+			else if(xmlHttp.responseText.indexOf("mailfailed")==0)
+			{
+				document.getElementById("error_display1").innerHTML = '<div><div class="alert alert-warning fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&#215;</a>Password Changed successfully. Although a confirmation mail can not be sent at the moment.!!!</div></div>';
 			}
 			else
 			{

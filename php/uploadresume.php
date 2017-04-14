@@ -2,7 +2,8 @@
 session_start();
 if (!isset($_SESSION['id']))
 {
-	header('Location:http://www.scanitjsr.org/tapkey');
+	header('Location: http://localhost/dashboard');
+	//header('Location:http://www.scanitjsr.org/tapkey');
 	exit();
 }
 if(isset($_FILES['resume']))

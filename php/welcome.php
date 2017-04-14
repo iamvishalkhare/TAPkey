@@ -1,9 +1,9 @@
-<html>
 <?php
 session_start();
 if(!isset($_SESSION['id']))
 {
-	header('Location: http://www.scanitjsr.org/tapkey');
+	header('Location: http://localhost/dashboard');
+	//header('Location: http://www.scanitjsr.org/tapkey');
 	exit();
 }
 include("connection.php");
@@ -13,6 +13,7 @@ $stmt1 = $pdo->prepare("SELECT * from stu_tbl WHERE username = :id");
 $stmt1->execute(array(':id' => $id));
 $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 ?>
+<html>
 <title>TAPkey</title>
 <head>
 	<link rel="icon" href="../img/favicon.png" type="image/x-icon">
@@ -27,10 +28,10 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 	<link href="../css/style.css" rel="stylesheet">
 	
 	<script> //customizing scrollbar
-	$('#questiondiv').enscroll({
-    showOnHover: false,
-    verticalTrackClass: 'track3',
-    verticalHandleClass: 'handle3'
+		$('#questiondiv').enscroll({
+	    showOnHover: false,
+	    verticalTrackClass: 'track3',
+	    verticalHandleClass: 'handle3'
 	});                  
 	</script>
 
@@ -39,15 +40,22 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
     <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Pavanam" rel="stylesheet">
 </head>
-<body onload="introJs().setOption('showProgress', true).start();">
+<body class="customscrollbar" onload="introJs().setOption('showProgress', true).start();">
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container">
   	<a data-step="1" data-intro="Welcome to TAPkey. This is a short tour of TAPkey." data-position='bottom' style="color:white; font-size:30px; font-family:Oswald, sans-serif;">TAPkey &#9996;</a>
 		<div class="btn-group pull-right" style=" margin-top:7px;">
-		      <button data-step="5" data-intro="You can change your password and know more about TAPkey here." data-position='bottom' type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle" aria-haspopup="true" aria-expanded="false"><?php echo $name;?>&nbsp;&nbsp;&#9776;</button>
+		      <button data-step="5" data-intro="These are pull-down links." data-position='bottom' type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle" aria-haspopup="true" aria-expanded="false"><?php echo $name;?>&nbsp;&nbsp;&#9776;</button>
 		        <ul class="dropdown-menu">
 		            <li><a id="abouttapkeylink">&#10068;&nbsp;&nbsp;About <b>TAPkey &#9996;</b></a></li>
-		            <li><a id="resumeinfolink">&#8475;&nbsp;&nbsp;What is a Résumé and CV?</b></a></li>
+		            <li><a id="resumeinfolink">&#9737;&nbsp;&nbsp;What is a Résumé and CV?</b></a></li>
+		            <li><a id="releasenoteslink">&#9745;&nbsp;&nbsp;Release Notes</b></a></li>
+		            <?php
+		            if(file_exists("resumes/".$id.".pdf"))
+		            {
+		            	echo "<li><a id='viewresumelink'>&#8475;&nbsp;&nbsp;View Your Résumé</b></a></li>";
+		            }
+		            ?>
 		            <li><a id="changepassword" >&#9998;&nbsp;&nbsp;Change Password</a></li>
 		            <li><a href="http://www.scanitjsr.org/tapkey">&#9919;&nbsp;&nbsp;Logout</a></li>	
 		        </ul>
@@ -57,9 +65,9 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 </nav>
 <link rel="stylesheet" href="../css/index_style.css">
 <div class="container">
-	<div class= "customscrollbar"  id="stuinfodiv" data-step="2" data-intro="This section shows all your details we have with us. Keep it updated at all times." data-position='right'>
+	<div class="customscrollbar" id="stuinfodiv" data-step="2" data-intro="This section shows all your details we have with us. Keep it updated at all times." data-position='right'>
 		<h1 style="text-align: center; font-family: 'Pavanam', sans-serif;"">&#9998; Student Info</h1>
-		<form style="margin-top: 10px;">
+		<form  style="margin-top: 10px;">
 		<div class="group">
 		    <div class="alert alert-info" role="alert">
 			  <center><a class="alert-link" style="font-size: 16px;"><?php if(isset($_SESSION['id'])) echo $result1['username'];?></a></center>
@@ -67,7 +75,7 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 		  </div>
 		  <div class="group">
 		    <input type="text" id="name" value="<?php if(isset($_SESSION['id'])) echo $result1['name'];?>"><span class="highlight" ></span><span class="bar"></span>
-		    <label><a href="#" data-toggle="tooltip" data-placement="top" title="Hooray!">Full Name</a></label>
+		    <label>Full Name</label>
 		  </div>
 		  <div class="group">
 		    <input type="email" id="email" value="<?php if(isset($_SESSION['id'])) echo $result1['email'];?>"><span class="highlight" ></span><span class="bar"></span>
@@ -76,6 +84,10 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 		  <div class="group">
 		    <input type="text" id="phone" value="<?php if(isset($_SESSION['id'])) echo $result1['phone'];?>"><span class="highlight" ></span><span class="bar"></span>
 		    <label>10 digit Mobile Number</label>
+		  </div>
+		  <div class="group">
+		    <input type="date" id="dob" value="<?php if(isset($_SESSION['id'])) echo $result1['dob'];?>"><span class="highlight" ></span><span class="bar"></span>
+		    <label>Date of Birth</label>
 		  </div>
 		  <div class="group">
 		    <input type="text" id="room" value="<?php if(isset($_SESSION['id'])) echo $result1['room'];?>"><span class="highlight" ></span><span class="bar"></span>
@@ -127,10 +139,10 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 		  </button>
 		</form>
 	</div>
-	<div id="announcementsdiv" data-step="4" data-intro="This is the announcement section which is under construction right now." data-position='left'>
+	<div id="announcementsdiv" style="display: none;" data-step="4" data-intro="This is the announcement section which is under construction right now." data-position='left'>
 		
 	</div>
-	<div class= "customscrollbar" id="resumediv" data-step="3" data-intro="This section gives you liberty to upload your Résumé to us. Keep your Résumé updated at all times." data-position='top'>
+	<div class= "customscrollbar" id="resumediv" data-step="3" data-intro="This section allows you to upload your Résumé to us. Keep your Résumé updated at all times." data-position='bottom'>
 	<table style="width:100%;height:100%">
 	<tr><td valign="top">
 	<div class="alert alert-info" role="alert" style="margin-left: 10px; margin-top: 10px; margin-right: 10px;">
@@ -163,7 +175,7 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
       	<br>
       	<div id="changepassform">
       		<div class="group">
-		    <input type="text" id="currentpass" style="background: white;"><span class="highlight" ></span><span class="bar"></span>
+		    <input type="password" id="currentpass" style="background: white;"><span class="highlight" ></span><span class="bar"></span>
 		    <label>Current Password</label>
 		  </div>
 		  <div class="group">
@@ -229,11 +241,12 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
         <h2 class="modal-title" id="myModalLabel">About <b>TAPkey &#9996;</b></h2>
       </div>
       <div class="modal-body" style=" font-size:18px; font-family: 'Pavanam', sans-serif;">
-			    <b>Curriculum vitae or CV</b> for short, is a latin expression which loosely translates to ‘the course of life’. By definition, a CV contains your biography or detailed account of academics, experience and projects undertaken, accomplishments, awards and affiliations, publications, teaching experience, honors and grants. A CV is written in a chronological order and the content does not change as per the job requirement.<br><br>
+			    <b>TAPkey</b> is a web based solution to all job applications processing woes.<br> At NIT Jamshedpur and specifically at Department at Computer Applications, a placement opportunity holds a great value and any glitches in the process can create a lot of chaos.<br> Generally students apply by mailing their applications and Résumés to their representatives of Training and Placement Cell. This is an extremely inefficient process on practical grounds. Some applications are missed out and worse of all the TAP cell member has to do a lot of redundant work.<br><br>
+			    <b>Enter TAPkey</b><br>
+			    <b>TAPkey</b> allows students to record their personal as well as academic details any number of times they want. The use case where this is best suited is when there are some dynamic components to student's academic and personal details like CGPA(Changes after every semester), Room Number and even phone number in some cases. Apart from that TAPkey also allow students to upload their Résumés for the use of placement purposes by TAP cell members. Résumés are also a dynamic component as it is always advisable to fine tune your Résumés before applying to a company keeping in mind the requirement of the position.<br>
+			    In all <b>TAPkey</b> make the lives of student as well as TAP cell members extremely easy.<br><br>
 
-				<b>Résumé</b>, a french word, means to sum up. Résumé is a brief job specific document that summarises the job experience, skillset, accomplishments, education, volunteer and extra curricular activities directly relevant to the particular position. The order in which it written is of little or no importance but the content must be tailored to suit the position applied for.The length of a resume is usually one or two pages whereas the length of the CV may vary as per the content.<br><br>
-
-				CV is mainly used in UK, New Zealand, European Union. Résumé is used in US and Canada. In India, South Africa and Australia, the terms resume and CV are used interchangeably.Depending on which part of the world you stay, you may choose the type of document. In India, unless specified, a combination of CV and resume is used. The document must contain your work experience so far(only relevant experience if you are aiming for change of career), education, training and volunteer activities, accomplishments, and extra-curricular activities, affiliations and publications.
+			    P.S. - Few more super awesome functionalities will be added soon...!!!
       </div>
       
        <div class="modal-footer">
@@ -247,6 +260,81 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
   </div>
 </div>
 	
+
+
+
+<!--View Resume Modal-->
+
+
+<div class="modal bs-modal-lg" id="viewresume" style="margin-left: 100px;">
+  <div class="modal-dialog modal-lg"  role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="window.location.reload();">
+        </button>
+        <h2 class="modal-title" id="myModalLabel"><?php if(isset($_SESSION['id'])) echo 'View Résumé - '.$id.'.pdf';?></h2>
+      </div>
+      <div class="modal-body customscrollbar" style=" font-size:18px; font-family: 'Pavanam', sans-serif;">
+			    <embed type="application/pdf" src="<?php if(isset($_SESSION['id'])) echo 'resumes/'.$id.'.pdf';?>" width="880" height="400">
+      </div>
+      
+       <div class="modal-footer">
+        <center>
+        <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+    	</center>
+      </div>
+    	</center>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--View Release notes Modal-->
+
+<div class="modal" id="releasenotes" style="margin-left: 100px;">
+  <div class="modal-dialog"  role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="window.location.reload();">
+        </button>
+        <h2 class="modal-title" id="myModalLabel">Release Notes</h2>
+      </div>
+      <div class="modal-body" style=" font-size:18px; font-family: 'Pavanam', sans-serif;">
+      			<h3>breaking.feature.fix (Versioning Scheme Used)</h3>
+      			<ul>
+			    	<li>breaking: Something has changed that means code must change</li>
+			    	<li>feature: Something new is added, but old code will still work fine.</li>
+			    	<li>fix: Nothing's new, but a bug has been fixed.</li>
+			    </ul>
+			    <b><h3>Version 1.0.0</h3>Published on - 12/04/2017 - 1200 hrs</b>
+			    <br>
+			    <b>What's new?</b>
+			    <br>
+			    <ul>
+			    	<li>Initial Release.</li>
+			    </ul>
+			    <b><h3>Version 1.1.0</h3>Published on - 14/04/2017 - 0500 hrs</b>
+			    <br>
+			    <b>What's new?</b>
+			    <br>
+			    <ul>
+			    	<li>Field to add Date of birth added in student info section.</li>
+			    	<li>Functionality to view uploaded Résumé added in pull-down links.</li>
+			    	<li>Functionality to view Release notes added in pull-down links.</li>
+			    </ul>
+      </div>
+      
+       <div class="modal-footer">
+        <center>
+        <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+    	</center>
+      </div>
+    	</center>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 	<div id="displaymasterblock">
@@ -317,12 +405,10 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 				</center>
 			</form>-->
 	</div>
-
-
 <!--div for Change Password-->
 
 <footer>
-  <p>Designed with all the &#9829; in the world by <a href="http://www.facebook.com/iamvishalkhare" target="_blank">Vishal Khare</a></p>
+  <p>Designed with all the &#9829; in the world by <a href="https://www.linkedin.com/in/iamvishalkhare/" target="_blank">Vishal Khare</a></p>
 </footer>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="../js/intro.min.js"></script>
@@ -336,6 +422,16 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 		$(function(){
 		 $('#abouttapkeylink').click(function() {
 		   $('#abouttapkey').modal('show');
+		 });
+		});
+		$(function(){
+		 $('#viewresumelink').click(function() {
+		   $('#viewresume').modal('show');
+		 });
+		});
+		$(function(){
+		 $('#releasenoteslink').click(function() {
+		   $('#releasenotes').modal('show');
 		 });
 		});
 		$(function(){
