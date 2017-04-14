@@ -1,6 +1,6 @@
 function changepass()
 {
-	document.getElementById("error_display").innerHTML = '<img src="http://localhost/dashboard/tapkey/img/ring.gif">';
+	document.getElementById("error_display1").innerHTML = '<img src="http://localhost/dashboard/tapkey/img/ring.gif">';
 	//document.getElementById("error_display1").innerHTML = '<img src="http://scanitjsr.org/tapkey/tapkey/img/ring.gif">';
 	var curpass = document.getElementById("currentpass").value;      //fetching value in E-Mail Field
 	var pass = document.getElementById("newpassword").value;    //fetching value in Password Field

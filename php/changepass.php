@@ -7,7 +7,6 @@ if(!isset($_SESSION['id']))
 	exit();
 }
 include("connection.php");
-include("mailsetting.php");
 $curpass=$_GET['curpass'];
 $pass=$_GET['pass'];
 $id=$_SESSION['id'];
