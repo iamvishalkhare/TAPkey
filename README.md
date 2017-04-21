@@ -25,7 +25,6 @@
 <ul>
 <li>Change password functionality</li>
 <li>View Resume functionality</li>
-<li></li>
 </ul>
 
 <h2>Technologies used</h2>
