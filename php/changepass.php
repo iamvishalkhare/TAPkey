@@ -42,16 +42,16 @@ else
 		//$headers[] = 'Content-type: text/html; charset=iso-8859-1';
 		
 			
-			if(mail($to, $subject, $message, $headers)) 
-			{
-				echo "success";
-				exit();	
-			}
-			else
-			{
-				echo "mailfailed";
-				exit();
-			}
+		if(mail($to, $subject, $message, $headers)) 
+		{
+			echo "success";
+			exit();	
+		}
+		else
+		{
+			echo "mailfailed";
+			exit();
+		}
 	}
 	else
 	{

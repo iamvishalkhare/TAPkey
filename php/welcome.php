@@ -14,7 +14,7 @@ $stmt1->execute(array(':id' => $id));
 $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 ?>
 <html>
-<title>TAPkey</title>
+<title> &#9996; TAPkey</title>
 <head>
 	<link rel="icon" href="../img/favicon.png" type="image/x-icon">
 	<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
@@ -25,6 +25,7 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 	<script src="../js/changepass.js"></script>
 	<script src="../js/stuinfo.js"></script>
 	<script src="../js/uploadresume.js"></script>
+	<script src="../js/applycomp.js"></script>
 	<link href="../css/style.css" rel="stylesheet">
 	
 	<script> //customizing scrollbar
@@ -65,6 +66,7 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 </nav>
 <link rel="stylesheet" href="../css/index_style.css">
 <div class="container">
+<div class="row">
 	<div class="customscrollbar" id="stuinfodiv" data-step="2" data-intro="This section shows all your details we have with us. Keep it updated at all times." data-position='right'>
 		<h1 style="text-align: center; font-family: 'Pavanam', sans-serif;"">&#9998; Student Info</h1>
 		<form  style="margin-top: 10px;">
@@ -139,10 +141,83 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 		  </button>
 		</form>
 	</div>
-	<div id="announcementsdiv" style="display: none;" data-step="4" data-intro="This is the announcement section which is under construction right now." data-position='left'>
-		
+
+
+
+
+
+
+
+<?php
+if($result1['year']==2)
+{	
+	$stmt4 = $pdo->prepare("SELECT * from company_tbl WHERE year2 = :year ORDER BY id DESC");
+	$stmt4->execute(array(':year' => 1));
+}
+else
+{
+	$stmt4 = $pdo->prepare("SELECT * from company_tbl WHERE year3 = :year ORDER BY id DESC");
+	$stmt4->execute(array(':year' => 1));
+}
+$appliedfor = array();
+date_default_timezone_set("Asia/Kolkata");
+$stmt5 = $pdo->prepare("SELECT * from apply_tbl WHERE stuid = :stuid");
+$stmt5->execute(array(':stuid' => $id));
+while($result5=$stmt5->fetch(PDO::FETCH_ASSOC))
+	array_push($appliedfor, $result5['companyid']);
+
+?>
+
+
+	<div id="announcementsdiv" class="customscrollbar"  data-step="4" data-intro="This is the announcement section which is under construction right now." data-position='left'>
+		<h1 style="text-align: center; font-family: 'Pavanam', sans-serif;"">&#9732; Announcements</h1>
+		<form style="width: 100%; margin-top: 10px; padding: 1em 1em 1em 1em;">
+		<table class="table table-hover table-bordered" id="company_tbl">
+		<tr><th>Id</th><th>Company</th><th>Posted on</th><th>Compensation</th><th>Deadline</th><th>Apply?</th></tr>
+		<?php
+		while($result4=$stmt4->fetch(PDO::FETCH_ASSOC))
+		{
+			$btn = '<input type="button" class="btn btn-primary btn-xs" value="Apply">';
+			if(in_array($result4['id'], $appliedfor))
+			{
+				$btn = '<a style="color: Green;" >Applied &#10004;</a>';
+			}
+			else if(!in_array($result4['id'], $appliedfor) && $result4['deadline']>= date("Y-m-d"))
+			{
+				$btn = '<input type="button" class="btn btn-primary btn-xs" onclick="applycomp('.$result4['id'].')"value="Apply">';
+			}
+			else if(!in_array($result4['id'], $appliedfor) && $result4['deadline']< date("Y-m-d"))
+			{
+				$btn = '<a style="color: Red;" >Deadline Crossed</a>';
+			}
+
+			echo '<tr><td>'.$result4['id'].'</td><td><a href="#" data-toggle="popover" data-html="true" data-placement="bottom" title="<b>'.$result4['name'].'</b>" data-content="'.$result4['details'].'">'.$result4['name'].'</a></td><td>'.$result4['date'].'</td><td>'.$result4['stipend'].'</td><td>'.$result4['deadline'].'</td><td id="'.$result4['id'].'">'.$btn.'</td></tr>';
+		}
+		?>
+		</table>
+		</form>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();  
+});
+</script>
+
 	</div>
-	<div class= "customscrollbar" id="resumediv" data-step="3" data-intro="This section allows you to upload your Résumé to us. Keep your Résumé updated at all times." data-position='bottom'>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<div class= "customscrollbar" id="resumediv" data-step="3" data-intro="This section allows you to upload your Résumé to us. Keep your Résumé updated at all times." data-position='top'>
 	<table style="width:100%;height:100%">
 	<tr><td valign="top">
 	<div class="alert alert-info" role="alert" style="margin-left: 10px; margin-top: 10px; margin-right: 10px;">
@@ -161,6 +236,7 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 	</td></tr>
 	</table>
 		
+	</div>
 	</div>
 </div>
 <div class="modal bs-modal-md" id="changepass">
@@ -203,7 +279,7 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 
 
 <!--div for modal after test is successfully added.-->
-<div class="modal bs-modal-lg" id="resumeinfo" style="margin-left: 100px;">
+<div class="modal bs-modal-lg" id="resumeinfo">
   <div class="modal-dialog modal-lg"  role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -232,7 +308,7 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 
 
 
-<div class="modal bs-modal-lg" id="abouttapkey" style="margin-left: 100px;">
+<div class="modal bs-modal-lg" id="abouttapkey">
   <div class="modal-dialog modal-lg"  role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -266,7 +342,7 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 <!--View Resume Modal-->
 
 
-<div class="modal bs-modal-lg" id="viewresume" style="margin-left: 100px;">
+<div class="modal bs-modal-lg" id="viewresume">
   <div class="modal-dialog modal-lg"  role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -275,7 +351,7 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
         <h2 class="modal-title" id="myModalLabel"><?php if(isset($_SESSION['id'])) echo 'View Résumé - '.$id.'.pdf';?></h2>
       </div>
       <div class="modal-body customscrollbar" style=" font-size:18px; font-family: 'Pavanam', sans-serif;">
-			    <embed type="application/pdf" src="<?php if(isset($_SESSION['id'])) echo 'resumes/'.$id.'.pdf';?>" width="880" height="400">
+			    <embed type="application/pdf" src="<?php if(isset($_SESSION['id'])) echo 'resumes/'.$id.'.pdf';?>" width="100%" height="65%">
       </div>
       
        <div class="modal-footer">
@@ -292,7 +368,7 @@ $result1=$stmt1->fetch(PDO::FETCH_ASSOC);
 
 <!--View Release notes Modal-->
 
-<div class="modal" id="releasenotes" style="margin-left: 100px;">
+<div class="modal" id="releasenotes">
   <div class="modal-dialog"  role="document">
     <div class="modal-content">
       <div class="modal-header">
