@@ -228,7 +228,7 @@ $(document).ready(function(){
 			</div>
 	</td>
 	<td valign="top" style="padding-right: 10px;">
-		<form style="margin-right:10px;margin: auto; margin-top: 10px; padding: 1em 1em 1em 1em; font-size: 12px;" class="file" method="post" enctype="multipart/form-data">
+		<form style="margin-right:10px;margin: auto; margin-top: 10px; padding: 1em 1em 1em 1em; font-size: 12px;" class="file" >
 		    <input id="resume" name="resume" type="file" required/><br>
 		    <div id="error_display3"></div>
 		    <button type="button" style="height: 40px; width:100%; background-color: #1E88E5; color: #fff; font-size: 20px;" onclick="resumefunc();">Upload</button>
