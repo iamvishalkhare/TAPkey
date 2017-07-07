@@ -206,17 +206,6 @@ $(document).ready(function(){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	<div class= "customscrollbar" id="resumediv" data-step="3" data-intro="This section allows you to upload your Résumé to us. Keep your Résumé updated at all times." data-position='top'>
 	<table style="width:100%;height:100%">
 	<tr><td valign="top">
